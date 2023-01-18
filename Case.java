@@ -1,11 +1,6 @@
 import javax.swing.*;
 
 
-public class Case {
-    JButton bouton;
+public class Case extends JButton{
     Joueur etat;
-    Case(){
-        this.bouton = new JButton();
-        this.etat = null;
-    }
 }
