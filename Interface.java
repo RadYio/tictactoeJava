@@ -20,9 +20,9 @@ public class Interface extends JFrame implements ActionListener{
         }
         panel.setPreferredSize(new Dimension(400,400));
         this.add(new JLabel("Le jeu"), BorderLayout.NORTH);
-        this.add(new JLabel(), BorderLayout.SOUTH);
-        this.add(new JLabel(), BorderLayout.EAST);
-        this.add(new JLabel(), BorderLayout.WEST);
+        this.add(new JLabel("   "), BorderLayout.SOUTH);
+        this.add(new JLabel("   "), BorderLayout.EAST);
+        this.add(new JLabel("   "), BorderLayout.WEST);
         this.add(panel,BorderLayout.CENTER);
         this.setSize(new Dimension(500,500));
         this.setVisible(true);
