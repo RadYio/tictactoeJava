@@ -4,27 +4,25 @@ import java.awt.*;
 
 
 public class Interface extends JFrame implements ActionListener{
-    public JButton[][] cases;
+    public Case[] cases;
 
 
     public Interface(){
         super("Test");
         this.setLayout(new BorderLayout());
-        cases = new JButton[3][3];
+        cases = new Case[9];
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
-        for(int i=0;i<3;i++){
-            for(int y=0;y<3;y++){
-                cases[i][y] = new JButton(i+"x"+y);
-                cases[i][y].addActionListener(this);
-                panel.add(cases[i][y]);
-            }
+        for(int i=0;i<9;i++){
+            cases[i] = new Case();
+            cases[i].addActionListener(this);
+            panel.add(cases[i]);
         }
-        panel.setSize(new Dimension(300,300));
-        this.add(new Label("Le jeu"), BorderLayout.NORTH);
-        this.add(new Label(), BorderLayout.SOUTH);
-        this.add(new Label(), BorderLayout.EAST);
-        this.add(new Label(), BorderLayout.WEST);
+        panel.setPreferredSize(new Dimension(400,400));
+        this.add(new JLabel("Le jeu"), BorderLayout.NORTH);
+        this.add(new JLabel(), BorderLayout.SOUTH);
+        this.add(new JLabel(), BorderLayout.EAST);
+        this.add(new JLabel(), BorderLayout.WEST);
         this.add(panel,BorderLayout.CENTER);
         this.setSize(new Dimension(500,500));
         this.setVisible(true);
