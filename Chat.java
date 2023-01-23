@@ -17,6 +17,44 @@ public class Chat extends JPanel{
         fenetre.setLocationRelativeTo(null);
         fenetre.setResizable(false);
 
+
+        Box b1 = new Box(BoxLayout.Y_AXIS);
+        //gestion de la zone de texte des messages deja envoyés
+        JTextArea zoneChat = new JTextArea();
+        zoneChat.setEditable(false);
+        zoneChat.setPreferredSize(new Dimension(300,400));
+        //changer la couleur de fond en gris(x)
+        zoneChat.setBackground(Color.LIGHT_GRAY);
+        b1.add(zoneChat);
+        Box b2 = new Box(BoxLayout.X_AXIS);
+        //gestion de la zone de texte pour envoyer un message et du bouton d'envoi du message à droite de la zone de texte
+        JTextField messageAEnvoyer = new JTextField("Message à envoyer");
+        messageAEnvoyer.setPreferredSize(new Dimension(200,100));
+        b2.add(messageAEnvoyer);
+        JButton boutonEnvoyer = new JButton("Envoyer");
+        boutonEnvoyer.setPreferredSize(new Dimension(100, 100));
+        b2.add(boutonEnvoyer);
+
+        b1.add(b2);
+        fenetre.add(b1);
+        fenetre.pack();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* 
         //gestion du panel qui contiendra le chat et son bouton
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
@@ -34,7 +72,7 @@ public class Chat extends JPanel{
         panel.add(messageAEnvoyer);
         JButton boutonEnvoyer = new JButton("Envoyer");
         panel.add(boutonEnvoyer);
-
+        */
         
 
         
@@ -42,4 +80,3 @@ public class Chat extends JPanel{
         fenetre.setVisible(true);
     }
 }
-
