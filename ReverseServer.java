@@ -5,7 +5,7 @@ public class ReverseServer {
             System.out.println( "Serveur : Construction de l'implementation");
             Reverse rev = new Reverse();
             System.out.println("Objet Reverse lie dans le RMIregistry");
-            Naming.rebind("rmi://localhost:1099/Reverse", rev);
+            Naming.rebind("rmi://77.132.100.204:1099/Reverse", rev);
             System.out.println("Attente des invocations des clients ...");
 
         }catch (Exception e) {
