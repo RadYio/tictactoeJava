@@ -5,20 +5,24 @@ import java.awt.*;
 
 public class FenetreJoueur extends JFrame {
     public Case[] cases;
-
+    static int hauteur = 600;
+    static int largeur = 950;
 
     public FenetreJoueur(){
         super("XxXx__TicTacToe__xXxX");
         this.setLayout(new BorderLayout());
         cases = new Case[9];
-        
+        this.setSize(new Dimension(largeur,hauteur));
         //chat
+        /* 
         JTextArea zoneChat = new JTextArea();
         zoneChat.setPreferredSize(new Dimension(200, 400));
         zoneChat.setEditable(false);
         //changer la couleur de fond en gris
         zoneChat.setBackground(Color.LIGHT_GRAY);
+        */
 
+        Chat zoneChat = new Chat();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
@@ -26,14 +30,29 @@ public class FenetreJoueur extends JFrame {
             cases[i] = new Case();          
             panel.add(cases[i]);
         }
-        panel.setPreferredSize(new Dimension(400,400));
-        this.add(new JLabel("Le jeu"), BorderLayout.NORTH);
-        this.add(new JLabel("   "), BorderLayout.SOUTH);
-        this.add(new JLabel("   "), BorderLayout.EAST);
-        this.add(zoneChat, BorderLayout.EAST);
-        this.add(new JLabel("   "), BorderLayout.WEST);
-        this.add(panel,BorderLayout.CENTER);
-        this.setSize(new Dimension(700,500));
+        panel.setPreferredSize(new Dimension(hauteur - 50,hauteur - 50));
+
+        
+        JLabel north = new JLabel("");
+        north.setPreferredSize(new Dimension(largeur,25));
+        this.add(north, BorderLayout.NORTH);
+        JLabel south = new JLabel("");
+        south.setPreferredSize(new Dimension(largeur,25));
+        this.add(south, BorderLayout.SOUTH);
+        JLabel west = new JLabel("");
+        west.setPreferredSize(new Dimension(25,hauteur));
+        this.add(west, BorderLayout.WEST);
+        JLabel east = new JLabel("");
+        east.setPreferredSize(new Dimension(25,hauteur));
+        this.add(east, BorderLayout.EAST);
+
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridLayout(1,2));
+        panel2.add(panel);
+        panel2.add(zoneChat);
+        //panel.add(zoneChat, BorderLayout.EAST);
+        this.add(panel2,BorderLayout.CENTER);
+        //this.pack();
         this.setVisible(true);
         this.setResizable(false);
     }

@@ -1,6 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.*;
 import java.io.File;
 import java.awt.*;
 
@@ -49,6 +48,7 @@ public class Chat extends JPanel{
 
         this.add(boiteTotale);
 
+
     }
 
     public static void main(String[] args){
@@ -63,7 +63,7 @@ public class Chat extends JPanel{
         Chat notreChat = new Chat();
         
         fenetre.add(notreChat);
-        fenetre.pack();
+        //fenetre.pack();
         
     
         //Fenetre visible
