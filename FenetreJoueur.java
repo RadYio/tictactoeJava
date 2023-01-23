@@ -3,11 +3,11 @@ import java.awt.event.*;
 import java.awt.*;
 
 
-public class Interface extends JFrame implements ActionListener{
+public class FenetreJoueur extends JFrame {
     public Case[] cases;
 
 
-    public Interface(){
+    public FenetreJoueur(){
         super("XxXx__TicTacToe__xXxX");
         this.setLayout(new BorderLayout());
         cases = new Case[9];
@@ -23,8 +23,7 @@ public class Interface extends JFrame implements ActionListener{
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
         for(int i=0;i<9;i++){
-            cases[i] = new Case();
-            cases[i].addActionListener(this);
+            cases[i] = new Case();          
             panel.add(cases[i]);
         }
         panel.setPreferredSize(new Dimension(400,400));
@@ -36,13 +35,10 @@ public class Interface extends JFrame implements ActionListener{
         this.add(panel,BorderLayout.CENTER);
         this.setSize(new Dimension(700,500));
         this.setVisible(true);
-    }
-
-    public void actionPerformed(ActionEvent ae){
-        System.out.println("yay");
+        this.setResizable(false);
     }
 
     public static void main(String[] args){
-        new Interface();
+        new FenetreJoueur();
     }
 }

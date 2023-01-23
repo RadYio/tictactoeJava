@@ -1,7 +1,11 @@
 public class Joueur {
-    Character icone;
+    private Character icone;
 
-    Joueur(Character choix){
+    public Joueur(Character choix){
         this.icone = choix;
+    }
+
+    public Character getIcone(){
+        return this.icone;
     }
 }
