@@ -10,20 +10,12 @@ public class FenetreJoueur extends JFrame {
 
     public FenetreJoueur(){
         super("XxXx__TicTacToe__xXxX");
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridLayout());
         cases = new Case[9];
         this.setSize(new Dimension(largeur,hauteur));
-        //chat
-        /* 
-        JTextArea zoneChat = new JTextArea();
-        zoneChat.setPreferredSize(new Dimension(200, 400));
-        zoneChat.setEditable(false);
-        //changer la couleur de fond en gris
-        zoneChat.setBackground(Color.LIGHT_GRAY);
-        */
-
-        Chat zoneChat = new Chat();
-
+        //Création de la zone de chat
+        AffichageChat zoneChat = new AffichageChat();
+        //Création des cases
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
         for(int i=0;i<9;i++){
@@ -32,27 +24,29 @@ public class FenetreJoueur extends JFrame {
         }
         panel.setPreferredSize(new Dimension(hauteur - 50,hauteur - 50));
 
-        
-        JLabel north = new JLabel("");
-        north.setPreferredSize(new Dimension(largeur,25));
-        this.add(north, BorderLayout.NORTH);
-        JLabel south = new JLabel("");
-        south.setPreferredSize(new Dimension(largeur,25));
-        this.add(south, BorderLayout.SOUTH);
-        JLabel west = new JLabel("");
-        west.setPreferredSize(new Dimension(25,hauteur));
-        this.add(west, BorderLayout.WEST);
-        JLabel east = new JLabel("");
-        east.setPreferredSize(new Dimension(25,hauteur));
-        this.add(east, BorderLayout.EAST);
-
         JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayout(1,2));
         panel2.add(panel);
         panel2.add(zoneChat);
-        //panel.add(zoneChat, BorderLayout.EAST);
-        this.add(panel2,BorderLayout.CENTER);
-        //this.pack();
+        panel2.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
+
+
+        this.add(panel2);
+
+        UIManager.put("Label.font", new Font("Liberation Serif",Font.PLAIN,18));
+        try {
+            UIManager.setLookAndFeel( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            try {
+                UIManager.setLookAndFeel(UIManager
+                        .getSystemLookAndFeelClassName());
+            } catch (Exception ex) {
+                e.printStackTrace();
+                System.out.println("Erreur dans le thème");
+            }
+        }
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();
         this.setVisible(true);
         this.setResizable(false);
     }
@@ -82,6 +76,5 @@ public class FenetreJoueur extends JFrame {
 
     public static void main(String[] args){
         new FenetreJoueur();
-
     }
 }

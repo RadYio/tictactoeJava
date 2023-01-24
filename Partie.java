@@ -2,13 +2,15 @@ import java.util.ArrayList;
 
 public class Partie implements interfacePartie{
     ArrayList<Case> listeDeCases;
-    Joueur joueur1;
-    Joueur joueur2;
+    static Joueur joueur1;
+    static Joueur joueur2;
+    static int tour;
     Boolean partieEnCours = false;
 
 
     Partie(){
         listeDeCases = new ArrayList<Case>();
+        new FenetreJoueur();
     }
 
     //Attention deux joueurs peuvent avoir le meme symbole, il faudra corriger
@@ -25,5 +27,14 @@ public class Partie implements interfacePartie{
             }
         }
         return 0;
+    }
+
+    static Character getIcone(){
+        if(tour == 1){
+            tour = 2;
+            return joueur1.getIcone();
+        }
+        tour = 1;
+        return joueur2.getIcone();
     }
 }
