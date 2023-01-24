@@ -3,10 +3,10 @@ import javax.swing.*;
 import java.io.File;
 import java.awt.*;
 
-public class Chat extends JPanel{
+public class AffichageChat extends JPanel{
     static int largeur = 400;
     static int hauteur = 500;
-    Chat(){
+    AffichageChat(){
         super();
         Box boiteTotale = new Box(BoxLayout.Y_AXIS); 
 
@@ -60,7 +60,7 @@ public class Chat extends JPanel{
         fenetre.setLocationRelativeTo(null);
         fenetre.setResizable(false);
 
-        Chat notreChat = new Chat();
+        AffichageChat notreChat = new AffichageChat();
         
         fenetre.add(notreChat);
         //fenetre.pack();
