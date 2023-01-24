@@ -5,6 +5,9 @@ import java.awt.*;
 import java.rmi.*;
 import java.util.ArrayList;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class AffichageChat extends JPanel{
     static int largeur = 400;
     static int hauteur = 500;
@@ -64,12 +67,20 @@ public class AffichageChat extends JPanel{
         //Partie reseau
         try{ 
             InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
-            ArrayList<String> messages = ServeurMessage.recevoirMessage();
-            for(String message : messages){
-                zoneChat.append(message + "\n");
-            }
-
-
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                while(true){
+                    try{
+                        ArrayList<String> messages = ServeurMessage.recevoirMessage();
+                        for(String message : messages){
+                            zoneChat.append(message + "\n");
+                        }
+                        Thread.sleep(1000);
+                    }catch(Exception e){
+                        System.out.println("Erreur");
+                    }
+                }
+            });
         }catch (Exception e){ 
                 System.out.println ("Erreur d'accès à l'objet distant.");
                 System.out.println (e.toString());
