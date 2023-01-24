@@ -105,14 +105,17 @@ public class AffichageChat extends JPanel{
             executor.submit(() -> {
                 while(true){
                     try{
+                        zoneChat.setText("");
                         ArrayList<String> messages = ServeurMessage.recevoirMessage();
                         for(String message : messages){
                             zoneChat.append(message + "\n");
                         }
-                        Thread.sleep(1000);
                     }catch(Exception e){
                         System.out.println("Erreur");
+                        e.printStackTrace();
+
                     }
+                    Thread.sleep(1000);
                 }
             });
         }catch (Exception e){ 

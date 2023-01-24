@@ -1,6 +1,7 @@
 import java.rmi.*;
 import java.rmi.server.*;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
     private ArrayList<String> messages;
@@ -9,17 +10,31 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
         super();
         messages = new ArrayList<String>();
         System.out.println("Objet ChatRemote cree");
-        messages.add("fesse");
-        messages.add("big fesse");
+        ajouterBDD("Bienvenue sur le chat du jeu");
+        ajouterBDD("Premier message tres important et tres long histoire de voir si ca rentre dans la fenetre ou pas");
     }
 
     public boolean envoyerMessage(String message) throws RemoteException{
-        System.out.println("Message envoyé");
-        return this.messages.add(message);
+        System.out.println("Quelqu'un envoye un message au serveur");
+        return ajouterBDD(message);
     }
 
     public ArrayList<String> recevoirMessage() throws RemoteException{
-        System.out.println("Message demandé");
-        return messages;
+        System.out.println("Quelqu'un demande la liste des messages");
+        ArrayList<String> listeARenvoyer = new ArrayList<String>();
+
+        for(String e: messages.subList(Math.max(messages.size()-10, 0), messages.size())){
+            listeARenvoyer.add(e);
+        }
+        
+        return listeARenvoyer;
+    }
+
+    private boolean ajouterBDD(String message){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String fesse = sdf.format(new Date());
+        messages.add(fesse + "->" + message);
+        System.out.println("Ajout de:__ " + fesse + "->" + message);
+        return true;
     }
 }
