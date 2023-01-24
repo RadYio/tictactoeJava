@@ -4,7 +4,7 @@ import java.awt.*;
 
 
 public class FenetreJoueur extends JFrame {
-    public Case[] cases;
+    static Case[] cases;
     static int hauteur = 600;
     static int largeur = 950;
 
@@ -51,24 +51,30 @@ public class FenetreJoueur extends JFrame {
         this.setResizable(false);
     }
     //A replacer 
-    public boolean Victoire(){
+    static boolean victoire(){
         // Vérifie les lignes horizontales
         for (int i = 0; i < 3; i += 3) {
-            if (cases[i].equals(cases[i + 1]) && cases[i + 1].equals(cases[i + 2])) {
+            if (cases[i].identiques(cases[i + 1]) && cases[i + 1].identiques(cases[i + 2])) {
                 return true;
             }
         }
         // Vérifie les colonnes verticales
         for (int i = 0; i < 3; i++) {
-            if (cases[i].equals(cases[i + 3]) && cases[i + 3].equals(cases[i + 6])) {
+            if (cases[i].identiques(cases[i + 3]) && cases[i + 3].identiques(cases[i + 6])) {     
+                System.out.println("Victoire");
+
                 return true;
             }
         }
         // Vérifie les diagonales
-        if (cases[0].equals(cases[4]) && cases[4].equals(cases[8])) {
+        if (cases[0].identiques(cases[4]) && cases[4].identiques(cases[8])) {
+            System.out.println("Victoire");
+
             return true;
         }
-        if (cases[2].equals(cases[4]) && cases[4].equals(cases[6])) {
+        if (cases[2].identiques(cases[4]) && cases[4].identiques(cases[6])) {
+            System.out.println("Victoire");
+
             return true;
         }
         return false;

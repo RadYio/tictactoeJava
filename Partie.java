@@ -4,12 +4,14 @@ public class Partie implements interfacePartie{
     ArrayList<Case> listeDeCases;
     static Joueur joueur1;
     static Joueur joueur2;
-    static int tour;
+    static int tour = 1;
     Boolean partieEnCours = false;
 
 
     Partie(){
         listeDeCases = new ArrayList<Case>();
+        joueur1 = new Joueur('A');
+        joueur2 = new Joueur('B');
         new FenetreJoueur();
     }
 
@@ -36,5 +38,9 @@ public class Partie implements interfacePartie{
         }
         tour = 1;
         return joueur2.getIcone();
+    }
+
+    public static void main(String[] args){
+        new Partie();
     }
 }
