@@ -2,6 +2,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
 import java.awt.*;
+import java.rmi.*;
+import java.util.ArrayList;
 
 public class AffichageChat extends JPanel{
     static int largeur = 400;
@@ -38,6 +40,16 @@ public class AffichageChat extends JPanel{
 
         JButton boutonEnvoyer = new JButton(iconeDeBonneTaille);
         boutonEnvoyer.setPreferredSize(new Dimension(largeur - 300, hauteur - 400));
+        boutonEnvoyer.addActionListener(e -> {
+            try{ 
+                InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
+                ServeurMessage.envoyerMessage(messageAEnvoyer.getText());
+                messageAEnvoyer.setText("");
+            }catch (Exception ex){ 
+                    System.out.println ("Erreur d'accès à l'objet distant.");
+                    System.out.println (ex.toString());
+            }
+        });
 
         //On ajoute le messageAEnvoyer et le bouton a la boiteMessageEtBouton
         boiteMessageEtBouton.add(messageAEnvoyer);
@@ -48,6 +60,21 @@ public class AffichageChat extends JPanel{
 
         this.add(boiteTotale);
 
+
+        //Partie reseau
+        try{ 
+            InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
+            ArrayList<String> messages = ServeurMessage.recevoirMessage();
+            for(String message : messages){
+                zoneChat.append(message + "\n");
+            }
+
+
+        }catch (Exception e){ 
+                System.out.println ("Erreur d'accès à l'objet distant.");
+                System.out.println (e.toString());
+        }
+    
 
     }
 

@@ -14,13 +14,13 @@ public class JeSuisServeurChat {
 
         try {
             System.out.println( "Serveur : Construction de l'implementation");
-            Reverse rev = new Reverse();
-            System.out.println("Objet Reverse lie dans le RMIregistry");
-            Naming.rebind("rmi://localhost:1099/Reverse", rev);
-            System.out.println("Attente des invocations des clients ...");
+            ChatRemote leChatDuJeu = new ChatRemote();
+            System.out.println("Objet leChatDuJeu lie dans le RMIregistry");
+            Naming.rebind("rmi://localhost:1099/Chat", leChatDuJeu);
+            System.out.println("Attente...");
 
         }catch (Exception e) {
-            System.out.println("Erreur de liaison de l'objet Reverse");
+            System.out.println("Erreur de liaison de l'objet leChatDuJeu");
             System.out.println(e.toString());
         }
 
