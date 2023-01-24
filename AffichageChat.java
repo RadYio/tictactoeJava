@@ -1,7 +1,11 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.io.File;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.rmi.*;
 import java.util.ArrayList;
 
@@ -30,7 +34,37 @@ public class AffichageChat extends JPanel{
         //gestion de la zone de texte pour envoyer un message et du bouton d'envoi du message à droite de la zone de texte
         JTextField messageAEnvoyer = new JTextField("Message à envoyer");
         messageAEnvoyer.setPreferredSize(new Dimension(largeur - 100, hauteur - 400));
+        messageAEnvoyer.addMouseListener(new MouseListener(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                // TODO Auto-generated method stub
+                messageAEnvoyer.setText("");                
+            }
 
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+         });
     
         //Petit trick pour avoir une image sur un bouton de la bonne taille
         ImageIcon iconeDeBonneTaille = new ImageIcon();
