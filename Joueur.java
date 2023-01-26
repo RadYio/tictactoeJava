@@ -1,4 +1,4 @@
-public class Joueur {
+public class Joueur{
     private Character icone;
 
     public Joueur(Character choix){
