@@ -20,7 +20,7 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
     }
 
     public ArrayList<String> recevoirMessage() throws RemoteException{
-        System.out.println("Quelqu'un demande la liste des messages");
+        //System.out.println("Quelqu'un demande la liste des messages");
         ArrayList<String> listeARenvoyer = new ArrayList<String>();
 
         for(String e: messages.subList(Math.max(messages.size()-10, 0), messages.size())){

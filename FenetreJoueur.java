@@ -2,25 +2,52 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+import java.rmi.*;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class FenetreJoueur extends JFrame {
-    static Case[] cases;
     static int hauteur = 600;
     static int largeur = 950;
+    public Grille grille;
 
-    public FenetreJoueur(){
+    public FenetreJoueur(Character fesse){
         super("XxXx__TicTacToe__xXxX");
+        Joueur jeSuisJoueur = new Joueur(fesse);
+        this.grille = new Grille();
         this.setLayout(new GridLayout());
-        cases = new Case[9];
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         this.setSize(new Dimension(largeur,hauteur));
         //Création de la zone de chat
         AffichageChat zoneChat = new AffichageChat();
         //Création des cases
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
-        for(int i=0;i<9;i++){
-            cases[i] = new Case();          
-            panel.add(cases[i]);
+        for(Case c:this.grille.listeDeCases){
+            c.addActionListener(e-> {
+                if(c.etat == null){
+                    c.setText(jeSuisJoueur.getIcone().toString());
+                    c.etat =jeSuisJoueur.getIcone();
+
+
+                    try{
+                        InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+                        ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());  
+                    }catch(Exception e2){
+                        System.out.println("ne peut pas jouer");
+                        e2.printStackTrace();
+                    }
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    executor.execute(new Job(this.grille,jeSuisJoueur));
+
+                    
+                        
+                }
+            });
+            panel.add(c);
         }
         panel.setPreferredSize(new Dimension(hauteur - 50,hauteur - 50));
 
@@ -49,38 +76,80 @@ public class FenetreJoueur extends JFrame {
         this.repaint();
         this.setVisible(true);
         this.setResizable(false);
-    }
-    //A replacer 
-    static boolean victoire(){
-        // Vérifie les lignes horizontales
-        for (int i = 0; i < 3; i += 3) {
-            if (cases[i].identiques(cases[i + 1]) && cases[i + 1].identiques(cases[i + 2])) {
-                return true;
+
+
+        //Partie reseau
+        Integer nbJoueur;
+        try{
+            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+            nbJoueur = ServeurPartie.connexion(jeSuisJoueur.getIcone());
+            System.out.println("Vous etes le joueur " + nbJoueur);
+            if(nbJoueur == 1){
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Job(this.grille,jeSuisJoueur));
             }
-        }
-        // Vérifie les colonnes verticales
-        for (int i = 0; i < 3; i++) {
-            if (cases[i].identiques(cases[i + 3]) && cases[i + 3].identiques(cases[i + 6])) {     
-                System.out.println("Victoire");
+            
 
-                return true;
-            }
+            
+        }catch(Exception e){
+            System.out.println("Premiere erreur de connexion");
+            e.printStackTrace();
         }
-        // Vérifie les diagonales
-        if (cases[0].identiques(cases[4]) && cases[4].identiques(cases[8])) {
-            System.out.println("Victoire");
 
-            return true;
-        }
-        if (cases[2].identiques(cases[4]) && cases[4].identiques(cases[6])) {
-            System.out.println("Victoire");
+        //Connecte
+        
 
-            return true;
-        }
-        return false;
+        
+
+
+
+
     }
 
     public static void main(String[] args){
-        new FenetreJoueur();
+        new FenetreJoueur(args[0].charAt(0));
     }
+}
+
+class Job implements Runnable{
+
+    private Grille g;
+    private Joueur j;
+
+    public Job(Grille grille,Joueur jeSuisJoueur){
+        this.g = grille;
+        this.j = jeSuisJoueur;
+    }
+
+    public void run(){
+        go(this.g, this.j);
+    }
+
+    public void go(Grille grille, Joueur jeSuisJoueur){
+        try{
+            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+            
+            for(Case c:grille.listeDeCases) c.setEnabled(false);
+
+
+            Integer temp;
+            while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)) Thread.sleep(1000);
+
+
+            //Si victoire il y a
+            if(temp.equals(10)) System.out.println("Il a gagné");
+            //Si c'est mon tour de jouer
+            else{
+                for(Case c:grille.listeDeCases){
+                    if(c.etat == null){
+                        c.setEnabled(true);
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println("toujours pas ");
+        }  
+    }
+
 }
