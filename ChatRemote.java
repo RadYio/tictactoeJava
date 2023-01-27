@@ -10,13 +10,13 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
         super();
         messages = new ArrayList<String>();
         System.out.println("Objet ChatRemote cree");
-        ajouterBDD("Bienvenue sur le chat du jeu");
-        ajouterBDD("Premier message tres important et tres long histoire de voir si ca rentre dans la fenetre ou pas");
+        ajouterBDD("Bienvenue sur le chat du jeu", '*');
+        ajouterBDD("Premier message tres important et tres long histoire de voir si ca rentre dans la fenetre ou pas", '*');
     }
 
     public boolean envoyerMessage(String message) throws RemoteException{
         System.out.println("Quelqu'un envoye un message au serveur");
-        return ajouterBDD(message);
+        return ajouterBDD(message, '-');
     }
 
     public ArrayList<String> recevoirMessage() throws RemoteException{
@@ -30,11 +30,11 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
         return listeARenvoyer;
     }
 
-    private boolean ajouterBDD(String message){
+    private boolean ajouterBDD(String message, Character iconeJoueur){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String fesse = sdf.format(new Date());
-        messages.add(fesse + "->" + message);
-        System.out.println("Ajout de:__ " + fesse + "->" + message);
+        String heureFormat = sdf.format(new Date());
+        messages.add("(" + heureFormat + ") [" + iconeJoueur + "] -- " + message);
+        System.out.println("Ajout de:__ " + heureFormat + "->" + message);
         return true;
     }
 }

@@ -99,13 +99,7 @@ public class FenetreJoueur extends JFrame {
             System.out.println("Premiere erreur de connexion");
             e.printStackTrace();
         }
-
-        //Connecte
         
-
-        
-
-
 
 
     }
