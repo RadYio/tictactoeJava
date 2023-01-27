@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+import java.util.Random;
+
 import java.rmi.*;
 
 import java.util.concurrent.ExecutorService;
@@ -13,9 +15,11 @@ public class FenetreJoueur extends JFrame {
     static int largeur = 950;
     public Grille grille;
 
-    public FenetreJoueur(Character fesse){
+    public FenetreJoueur(){
         super("XxXx__TicTacToe__xXxX");
-        Joueur jeSuisJoueur = new Joueur(fesse);
+        Random r = new Random();
+        char choix = (char)(r.nextInt(26) + 'a');
+        Joueur jeSuisJoueur = new Joueur(choix);
         this.grille = new Grille();
         this.setLayout(new GridLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,7 +111,7 @@ public class FenetreJoueur extends JFrame {
     }
 
     public static void main(String[] args){
-        new FenetreJoueur(args[0].charAt(0));
+        new FenetreJoueur();
     }
 }
 
