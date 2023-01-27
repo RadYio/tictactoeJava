@@ -15,5 +15,11 @@ public class Case extends JButton{
         if(this.etat.equals(c2.etat))return true;
         return false;
     }
+
+    public void changeCarac(Character c){
+        this.etat = c;
+        System.out.println("carac"+c);
+        this.setText(c.toString());
+    }
     
 }

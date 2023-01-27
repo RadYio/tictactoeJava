@@ -32,11 +32,8 @@ public class FenetreJoueur extends JFrame {
         panel.setLayout(new GridLayout(3,3));
         for(Case c:this.grille.listeDeCases){
             c.addActionListener(e-> {
-                if(c.etat == null){
-                    c.setText(jeSuisJoueur.getIcone().toString());
-                    c.etat =jeSuisJoueur.getIcone();
-
-
+                if(c.etat == null){   
+                    c.changeCarac(jeSuisJoueur.getIcone());                 
                     try{
                         InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
                         ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());  
@@ -45,10 +42,7 @@ public class FenetreJoueur extends JFrame {
                         e2.printStackTrace();
                     }
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(new Job(this.grille,jeSuisJoueur));
-
-                    
-                        
+                    executor.execute(new Job(this.grille,jeSuisJoueur));              
                 }
             });
             panel.add(c);
@@ -131,13 +125,16 @@ class Job implements Runnable{
 
 
             Integer temp;
-            while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)) Thread.sleep(1000);
-
+            while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)){
+                 Thread.sleep(1000);
+                 System.out.println("retour "+temp);
+            }
 
             //Si victoire il y a
             if(temp.equals(10)) System.out.println("Il a gagné");
             //Si c'est mon tour de jouer
             else{
+                grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
                 for(Case c:grille.listeDeCases){
                     if(c.etat == null){
                         c.setEnabled(true);

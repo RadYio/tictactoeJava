@@ -10,6 +10,10 @@ public class Grille{
         }
     }
 
+    public Case getCase(Integer id){
+        return this.listeDeCases.get(id);
+    }
+
     public boolean verificationVictoire(){
         // Vérifie les lignes horizontales
         for (int i = 0; i < 3; i += 3) {

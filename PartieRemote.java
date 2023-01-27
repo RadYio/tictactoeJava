@@ -13,6 +13,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
     PartieRemote() throws RemoteException{
         this.laGrille = new Grille();
         this.tour = 0;
+
     }
 
     public static void main(String[] args){
@@ -48,7 +49,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
     @Override
     public Integer jouer(Integer i, Character j) throws RemoteException {
         System.out.println(j +" joue");
-        this.laGrille.listeDeCases.get(i).etat = j;
+        this.laGrille.getCase(i).changeCarac(j);
         this.dernierCoup = i;
         this.tour++;
         if(this.laGrille.verificationVictoire())
@@ -58,10 +59,17 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
 
     @Override
     public Integer monTour(Character j) throws RemoteException {
-        System.out.println(j + " demande");
+        //System.out.println(j + " demande pour tour"+this.tour);
         if(this.laGrille.verificationVictoire())return 10;
-        else if((tour % 2)==1 && this.joueur1.equals(j))return this.dernierCoup;
+        if((tour % 2)==1 && this.joueur1.equals(j))return this.dernierCoup;
+        if((tour % 2)==0 && joueur2 != null && this.joueur2.equals(j))return this.dernierCoup;
         return -1;
+    }
+
+    @Override
+    public Character getAdvIcone(Character j) throws RemoteException{
+        if(j.equals(this.joueur1))return joueur2;
+        else return joueur1; 
     }
 
     
