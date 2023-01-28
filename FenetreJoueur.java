@@ -89,8 +89,7 @@ public class FenetreJoueur extends JFrame {
 
             
         }catch(Exception e){
-            System.out.println("Premiere erreur de connexion");
-            e.printStackTrace();
+            System.out.println("Impossible de joindre le serveur pour se connecter");
         }
         
 
@@ -131,9 +130,11 @@ class Job implements Runnable{
             System.out.println("retour "+ temp);
 
             //Si victoire il y a
-            if(temp.equals(10)) System.out.println("Il a gagné");
+            if(temp >= 10) {
+                System.out.println("Il a gagné");
+                grille.getCase(temp-10).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
             //Si c'est mon tour de jouer
-            else{
+            }else{
                 grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
                 for(Case c:grille.listeDeCases){
                     if(c.etat == null){
@@ -143,7 +144,7 @@ class Job implements Runnable{
             }
         }
         catch(Exception e){
-            System.out.println("toujours pas ");
+            System.out.println("Impossible de joindre le serveur pour jouer");
         }  
     }
 
