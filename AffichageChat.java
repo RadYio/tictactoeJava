@@ -2,11 +2,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-import org.w3c.dom.events.MouseEvent;
+
 
 import java.io.File;
 import java.awt.*;
-import java.awt.event.MouseListener;
+
 import java.rmi.*;
 import java.util.ArrayList;
 
