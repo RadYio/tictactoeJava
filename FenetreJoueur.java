@@ -127,8 +127,9 @@ class Job implements Runnable{
             Integer temp;
             while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)){
                  Thread.sleep(1000);
-                 System.out.println("retour "+temp);
+                 System.out.println("retour "+ temp);
             }
+            System.out.println("retour "+ temp);
 
             //Si victoire il y a
             if(temp.equals(10)) System.out.println("Il a gagné");
