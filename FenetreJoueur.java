@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 public class FenetreJoueur extends JFrame {
     static int hauteur = 600;
     static int largeur = 950;
+    JProgressBar progressBar = null;
     public Grille grille;
 
     public FenetreJoueur(){
@@ -26,6 +27,8 @@ public class FenetreJoueur extends JFrame {
         this.setSize(new Dimension(largeur,hauteur));
         //Création de la zone de chat
         AffichageChat zoneChat = new AffichageChat(jeSuisJoueur.getIcone());
+
+        Job job = new Job(this.grille,jeSuisJoueur,this);
         //Création des cases
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
@@ -41,21 +44,35 @@ public class FenetreJoueur extends JFrame {
                         e2.printStackTrace();
                     }
                     ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(new Job(this.grille,jeSuisJoueur));              
+                    job.stop();
+                    executor.execute(job);              
                 }
             });
             panel.add(c);
         }
         panel.setPreferredSize(new Dimension(hauteur - 50,hauteur - 50));
 
+
+        
+
+        this.progressBar = new JProgressBar();
+        this.progressBar.setPreferredSize(new Dimension(hauteur - 150, 25));
+        this.resetProgressBar();
+
         JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayout(1,2));
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
         panel2.add(panel);
-        panel2.add(zoneChat);
-        panel2.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
+        panel2.add(this.progressBar);
+
+        JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridLayout(1,2));
+        panel3.add(panel2);
+        panel3.add(zoneChat);
+        
+        panel3.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
 
 
-        this.add(panel2);
+        this.add(panel3);
 
         UIManager.put("Label.font", new Font("Liberation Serif",Font.PLAIN,18));
         try {
@@ -85,7 +102,7 @@ public class FenetreJoueur extends JFrame {
 
             if(nbJoueur == 1){
                 ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Job(this.grille,jeSuisJoueur));
+                executor.execute(new Job(this.grille,jeSuisJoueur,this));
             }
             
 
@@ -93,6 +110,15 @@ public class FenetreJoueur extends JFrame {
             System.out.println("Impossible de joindre le serveur pour se connecter");
         }
         
+    }
+    
+    public void resetProgressBar(){
+       this.progressBar.setValue(0);
+    }
+    public void avanceProgressBar(){
+        int currentValue = progressBar.getValue();
+        int newValue = currentValue + (int)(progressBar.getMaximum() * 0.1);
+        this.progressBar.setValue(newValue);
     }
 
     public static void main(String[] args){
