@@ -72,7 +72,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
     public Integer monTour(Character j) throws RemoteException {
         
         if(this.laGrille.verificationVictoire()){
-            this.resetPartie();
+            //this.resetPartie();
             return (10+this.dernierCoup);
         } 
         if((tour % 2)==1 && this.joueur1.equals(j)) return this.dernierCoup;
