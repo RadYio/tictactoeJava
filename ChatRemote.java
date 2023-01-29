@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
+    private static Integer nbMessageDansLeChat = 15;
     private ArrayList<String> messages;
 
     public ChatRemote() throws RemoteException{
@@ -23,7 +24,7 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
         //System.out.println("Quelqu'un demande la liste des messages");
         ArrayList<String> listeARenvoyer = new ArrayList<String>();
 
-        for(String e: messages.subList(Math.max(messages.size()-10, 0), messages.size())){
+        for(String e: messages.subList(Math.max(messages.size()-nbMessageDansLeChat, 0), messages.size())){
             listeARenvoyer.add(e);
         }
         

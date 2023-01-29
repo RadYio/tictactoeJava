@@ -40,7 +40,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
             this.joueur2 = j;
             this.petitChat.envoyerMessage("Joueur 2 vient de se connecter", j);
             this.resetPartie();
-            this.petitChat.envoyerMessage("-------", '*');
+            this.petitChat.envoyerMessage("---", '*');
             this.petitChat.envoyerMessage("La partie commence", '*');
             return 2;
         }
