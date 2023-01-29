@@ -17,7 +17,7 @@ public class FenetreJoueur extends JFrame {
     public FenetreJoueur(){
         super("XxXx__TicTacToe__xXxX");
         Random r = new Random();
-        char choix = (char)(r.nextInt(26) + 'a');
+        char choix = (char)(r.nextInt(26) + 'A');
         Joueur jeSuisJoueur = new Joueur(choix);
         this.grille = new Grille();
         this.setLayout(new GridLayout());

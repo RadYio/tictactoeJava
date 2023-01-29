@@ -16,7 +16,7 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
 
     public boolean envoyerMessage(String message, Character j) throws RemoteException{
         System.out.println("Quelqu'un envoye un message au serveur");
-        return ajouterBDD(message, '-');
+        return ajouterBDD(message, j);
     }
 
     public ArrayList<String> recevoirMessage() throws RemoteException{

@@ -13,7 +13,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
 
 
     PartieRemote(ChatRemote petitChat) throws RemoteException{
-        resetPartie();
+        this.resetPartie();
         this.dernierGagnant = null;
         this.petitChat = petitChat;
     }
@@ -31,17 +31,17 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
     @Override
     public Integer connexion(Character j) throws RemoteException {
         System.out.println("[SERVEUR] - Un joueur se connecte");
-        if(joueur1 == null){
-            joueur1 = j;
-            petitChat.envoyerMessage("Joueur 1 vient de se connecter", '*');
+        if(this.joueur1 == null){
+            this.joueur1 = j;
+            this.petitChat.envoyerMessage("Joueur 1 vient de se connecter", j);
             return 1;
         }
-        else if(joueur2 == null){
-            joueur2 = j;
-            petitChat.envoyerMessage("Joueur 2 vient de se connecter", '*');
-            resetPartie();
-            petitChat.envoyerMessage("-------", '*');
-            petitChat.envoyerMessage("La partie commence", '*');
+        else if(this.joueur2 == null){
+            this.joueur2 = j;
+            this.petitChat.envoyerMessage("Joueur 2 vient de se connecter", j);
+            this.resetPartie();
+            this.petitChat.envoyerMessage("-------", '*');
+            this.petitChat.envoyerMessage("La partie commence", '*');
             return 2;
         }
         return -1;
@@ -60,7 +60,8 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
         this.tour++;
         if(this.laGrille.verificationVictoire()){    
             this.dernierGagnant = j;
-            supprimerJoueurs();
+            this.supprimerJoueurs();
+            petitChat.envoyerMessage("Le joueur " + j + " gagne la partie", '*');
             return 1;
         }
             
@@ -69,18 +70,21 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
 
     @Override
     public Integer monTour(Character j) throws RemoteException {
-        //System.out.println(j + " demande pour tour"+this.tour);
-        if(this.laGrille.verificationVictoire()) return (10+this.dernierCoup);
+        
+        if(this.laGrille.verificationVictoire()){
+            this.resetPartie();
+            return (10+this.dernierCoup);
+        } 
         if((tour % 2)==1 && this.joueur1.equals(j)) return this.dernierCoup;
-        if((tour % 2)==0 && joueur2 != null && this.joueur2.equals(j)) return this.dernierCoup;
+        if((tour % 2)==0 && this.joueur2 != null && this.joueur2.equals(j)) return this.dernierCoup;
         return -1;
     }
 
     @Override
     public Character getAdvIcone(Character j) throws RemoteException{
         
-        if(j.equals(this.joueur1))return joueur2;
-        else return joueur1; 
+        if(j.equals(this.joueur1))return this.joueur2;
+        else return this.joueur1; 
     }
 
     public void resetPartie(){
@@ -90,8 +94,8 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
     }
 
     private void supprimerJoueurs(){
-        joueur1 = null;
-        joueur2 = null;
+        this.joueur1 = null;
+        this.joueur2 = null;
         System.out.println("[SERVEUR] - suppresion du lien des joueurs");
     }
 
