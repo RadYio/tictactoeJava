@@ -30,8 +30,8 @@ class Job implements Runnable{
 
             //Si victoire il y a
             if(temp >= 10) {
-                System.out.println("Il a gagné");
                 grille.getCase(temp-10).changeCarac(ServeurPartie.iconeGagnant());
+                ServeurPartie.resetPartie();
             //Si c'est mon tour de jouer
             }else{
                 grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
