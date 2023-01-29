@@ -14,7 +14,7 @@ public class JeSuisServeurChat {
         try {
             System.out.println( "Serveur : Construction de l'implementation");
             ChatRemote leChatDuJeu = new ChatRemote();
-            PartieRemote MoteurDuJeu = new PartieRemote();
+            PartieRemote MoteurDuJeu = new PartieRemote(leChatDuJeu);
 
             System.out.println("Objet MoteurDuJeu lie dans le RMIregistry");
             Naming.rebind("rmi://localhost:1099/Partie", MoteurDuJeu);

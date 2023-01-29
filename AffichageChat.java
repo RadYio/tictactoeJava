@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 public class AffichageChat extends JPanel{
     static int largeur = 400;
     static int hauteur = 500;
-    AffichageChat(){
+    AffichageChat(Character j){
         super();
         Box boiteTotale = new Box(BoxLayout.Y_AXIS); 
 
@@ -57,7 +57,7 @@ public class AffichageChat extends JPanel{
         boutonEnvoyer.addActionListener(e -> {
             try{ 
                 InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
-                ServeurMessage.envoyerMessage(messageAEnvoyer.getText());
+                ServeurMessage.envoyerMessage(messageAEnvoyer.getText(), j);
                 messageAEnvoyer.setText("");
             }catch (Exception ex){ 
                     System.out.println ("Erreur d'accès à l'objet distant.");
@@ -112,7 +112,7 @@ public class AffichageChat extends JPanel{
         fenetre.setLocationRelativeTo(null);
         fenetre.setResizable(false);
 
-        AffichageChat notreChat = new AffichageChat();
+        AffichageChat notreChat = new AffichageChat('^');
         
         fenetre.add(notreChat);
         //fenetre.pack();

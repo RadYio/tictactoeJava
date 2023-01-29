@@ -6,6 +6,7 @@ public interface InterfacePartie extends Remote{
     public Integer jouer(Integer i, Character j) throws RemoteException;
     public Integer monTour(Character j) throws RemoteException;
     public Character getAdvIcone(Character j) throws RemoteException;
+    public Character iconeGagnant() throws RemoteException;
 }
 
 
