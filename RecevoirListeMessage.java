@@ -2,6 +2,10 @@ import java.rmi.*;
 
 import java.util.ArrayList;
 
+import java.io.File;
+import javax.imageio.ImageIO;
+
+import java.awt.*;
 import javax.swing.*;
 
 public class RecevoirListeMessage implements Runnable{
@@ -65,6 +69,23 @@ public class RecevoirListeMessage implements Runnable{
         }
         JOptionPane.showMessageDialog(null, "Impossible de joindre le serveur pour le chat");
 
+        //On change le bouton pour qu'il propose une reconnexion au lieu d'envoyer un message
+        boutonEnvoyer.removeActionListener(boutonEnvoyer.getActionListeners()[0]);
+
+        ImageIcon iconeDeBonneTaille = new ImageIcon();
+        try{
+            Image img = ImageIO.read(new File("./assets/icon_network_fail.png"));
+            iconeDeBonneTaille.setImage(img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+        }catch(Exception e){
+            System.out.println("Erreur");
+        }
+
+        boutonEnvoyer.setIcon(iconeDeBonneTaille);
+        boutonEnvoyer.addActionListener( e -> {
+            this.nbTry = 0;
+            go(zoneChat, boutonEnvoyer, zoneSaisie);
+        });
+        boutonEnvoyer.setEnabled(true);
     }
 
     /*

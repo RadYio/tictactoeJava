@@ -1,14 +1,12 @@
 import javax.imageio.ImageIO;
+import java.io.File;
+
+
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
-
-
-
-import java.io.File;
 import java.awt.*;
 
 import java.rmi.*;
-import java.util.ArrayList;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,6 +76,8 @@ public class AffichageChat extends JPanel{
                     System.out.println (ex.toString());
             }
         });
+
+
 
         //On ajoute le messageAEnvoyer et le bouton a la boiteMessageEtBouton
         boiteMessageEtBouton.add(messageAEnvoyer);
