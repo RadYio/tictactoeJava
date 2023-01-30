@@ -18,9 +18,11 @@ class Job implements Runnable{
         try{
             InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
             
-            for(Case c:grille.listeDeCases) c.setEnabled(false);
+            //Desactivation de toutes les cases
+            for(Case c:grille.listeDeCases) 
+                c.setEnabled(false);
 
-
+            //On attend que l'autre joueur joue via un serveur
             Integer temp;
             while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)){
                  Thread.sleep(1000);
@@ -32,7 +34,7 @@ class Job implements Runnable{
             if(temp >= 10) {
                 grille.getCase(temp-10).changeCarac(ServeurPartie.iconeGagnant());
                 ServeurPartie.resetPartie();
-            //Si c'est mon tour de jouer
+            //Sinon un nouveau tour de jeu, donc on active les cases
             }else{
                 grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
                 for(Case c:grille.listeDeCases){
