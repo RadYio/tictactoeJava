@@ -8,16 +8,26 @@ import java.rmi.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/* Classe FenetreJoueur qui est une JFrame
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class FenetreJoueur extends JFrame {
+    
+    //hautuer de la fenetre
     static int hauteur = 600;
+
+    //largueur de la fenetre
     static int largeur = 950;
+
+    //grille de jeu
     public Grille grille;
 
-    public FenetreJoueur(){
+    /*
+     * Constructeur de la classe FenetreJoueur
+     */
+    public FenetreJoueur(Character choix){
         super("XxXx__TicTacToe__xXxX");
-        Random r = new Random();
-        char choix = (char)(r.nextInt(26) + 'A');
         Joueur jeSuisJoueur = new Joueur(choix);
         this.grille = new Grille();
         this.setLayout(new GridLayout());
@@ -96,7 +106,9 @@ public class FenetreJoueur extends JFrame {
     }
 
     public static void main(String[] args){
-        new FenetreJoueur();
+        Random r = new Random();
+        char choix = (char)(r.nextInt(26) + 'A');
+        new FenetreJoueur(choix);
     }
 }
 

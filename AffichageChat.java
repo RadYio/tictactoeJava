@@ -13,9 +13,24 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/*
+ * Classe AffichageChat qui est un JPanel
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class AffichageChat extends JPanel{
+
+    //largueur de la fenetre
     static int largeur = 400;
+
+    //hauteur de la fenetre
     static int hauteur = 500;
+
+    /*
+     * Constructeur de la classe AffichageChat
+     * @param j le joueur qui utilise l'interface
+     */
     AffichageChat(Character j){
         super();
         Box boiteTotale = new Box(BoxLayout.Y_AXIS); 
@@ -103,6 +118,9 @@ public class AffichageChat extends JPanel{
 
     }
 
+    /*
+     * Methode main de test
+     */
     public static void main(String[] args){
 
         //gestion de la fenetre
