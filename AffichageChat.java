@@ -32,7 +32,6 @@ public class AffichageChat extends JPanel{
      * @param j le joueur qui utilise l'interface
      */
     AffichageChat(Character j){
-        super();
         Box boiteTotale = new Box(BoxLayout.Y_AXIS); 
 
         //gestion de la zone de texte des messages deja envoyés
@@ -89,31 +88,9 @@ public class AffichageChat extends JPanel{
 
         this.add(boiteTotale);
 
-
-        //Partie reseau
-        try{ 
-            InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.submit(() -> {
-                while(true){
-                    try{
-                        zoneChat.setText("");
-                        ArrayList<String> messages = ServeurMessage.recevoirMessage();
-                        for(String message : messages){
-                            zoneChat.append(message + "\n");
-                        }
-                    }catch(Exception e){
-                        System.out.println("Erreur");
-                        e.printStackTrace();
-
-                    }
-                    Thread.sleep(1000);
-                }
-            });
-        }catch (Exception e){ 
-                System.out.println ("Erreur d'accès à l'objet distant.");
-                System.out.println (e.toString());
-        }
+        //On lance le thread qui va recevoir les messages
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new RecevoirListeMessage(zoneChat, boutonEnvoyer, messageAEnvoyer));
     
 
     }
@@ -133,7 +110,7 @@ public class AffichageChat extends JPanel{
         AffichageChat notreChat = new AffichageChat('^');
         
         fenetre.add(notreChat);
-        //fenetre.pack();
+        fenetre.pack();
         
     
         //Fenetre visible

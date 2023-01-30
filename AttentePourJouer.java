@@ -10,7 +10,7 @@ import javax.swing.*;
  * 
  */
 
-public class Job implements Runnable{
+public class AttentePourJouer implements Runnable{
 
     private Grille g;
     private Joueur j;
@@ -21,7 +21,7 @@ public class Job implements Runnable{
      * @param jeSuisJoueur: le joueur qui est en attente
      * @return void
      */
-    public Job(Grille grille,Joueur jeSuisJoueur){
+    public AttentePourJouer(Grille grille,Joueur jeSuisJoueur){
         this.g = grille;
         this.j = jeSuisJoueur;
     }

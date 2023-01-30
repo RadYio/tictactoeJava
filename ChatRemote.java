@@ -65,7 +65,7 @@ public class ChatRemote extends UnicastRemoteObject implements InterfaceChat{
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String heureFormat = sdf.format(new Date());
         messages.add("(" + heureFormat + ") [" + iconeJoueur + "] -- " + message);
-        System.out.println("Ajout de:__ " + heureFormat + "->" + message);
+        System.out.println("(" + heureFormat + ") -- Le joueur [" + iconeJoueur + "]: " + message);
         return true;
     }
 }

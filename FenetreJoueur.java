@@ -26,53 +26,35 @@ public class FenetreJoueur extends JFrame {
     /*
      * Constructeur de la classe FenetreJoueur
      */
-    public FenetreJoueur(Character choix){
+    public FenetreJoueur(Joueur jeSuisJoueur){
+
+        //choix du titre de la fenetre
         super("XxXx__TicTacToe__xXxX");
-        Joueur jeSuisJoueur = new Joueur(choix);
-        this.grille = new Grille();
+
+        //choix du layout de la fenetre
         this.setLayout(new GridLayout());
+
+        //On decide de tout quitter si on ferme la fenetre (classique)
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        //On definit la taille de la fenetre
         this.setSize(new Dimension(largeur,hauteur));
+
         //Création de la zone de chat
         AffichageChat zoneChat = new AffichageChat(jeSuisJoueur.getIcone());
-        //Création des cases
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3,3));
-        for(Case c:this.grille.listeDeCases){
-            c.addActionListener(e-> {
-                if(c.etat == null){   
-                    c.changeCarac(jeSuisJoueur.getIcone());                 
-                    try{
-                        InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
-                        Integer gagner = ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());
+        AffichageJeu zoneJeu = new AffichageJeu(jeSuisJoueur);
 
-                        if(gagner == 1){
-                            JOptionPane.showMessageDialog(null, "Vous avez gagné !");
-                            System.exit(0);
-                        }
-                        
-                    }catch(Exception e2){
-                        System.out.println("ne peut pas jouer");
-                        e2.printStackTrace();
-                    }
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(new Job(this.grille,jeSuisJoueur));              
-                }
-            });
-            panel.add(c);
-        }
-        panel.setPreferredSize(new Dimension(hauteur - 50,hauteur - 50));
+    
+        JPanel panelTotal = new JPanel();
+        panelTotal.setLayout(new GridLayout(1,2));
+        panelTotal.add(zoneJeu);
+        panelTotal.add(zoneChat);
+        panelTotal.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
 
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayout(1,2));
-        panel2.add(panel);
-        panel2.add(zoneChat);
-        panel2.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
+        //On ajoute nos deux zones a la fenetre
+        this.add(panelTotal);
 
-
-        this.add(panel2);
-
+        //On change le thème de la fenetre
         UIManager.put("Label.font", new Font("Liberation Serif",Font.PLAIN,18));
         try {
             UIManager.setLookAndFeel( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -89,32 +71,15 @@ public class FenetreJoueur extends JFrame {
         this.repaint();
         this.setVisible(true);
         this.setResizable(false);
-
-
-        //Partie reseau
-        Integer nbJoueur;
-        try{
-            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
-
-            nbJoueur = ServeurPartie.connexion(jeSuisJoueur.getIcone());
-            System.out.println("Vous etes le joueur " + nbJoueur);
-
-            if(nbJoueur == 1){
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Job(this.grille,jeSuisJoueur));
-            }
-            
-
-        }catch(Exception e){
-            System.out.println("Impossible de joindre le serveur pour se connecter");
-        }
         
     }
 
     public static void main(String[] args){
+        
         Random r = new Random();
         char choix = (char)(r.nextInt(26) + 'A');
-        new FenetreJoueur(choix);
+
+        new FenetreJoueur(new Joueur(choix));
     }
 }
 
