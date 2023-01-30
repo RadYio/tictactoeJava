@@ -12,6 +12,7 @@ public class AffichageJeu extends JPanel{
     
     public Grille grille;
     private Integer hauteur;
+    public JProgressBar progressBar = null;
 
     public AffichageJeu(Joueur jeSuisJoueur){
         this.hauteur = 50;
@@ -25,11 +26,12 @@ public class AffichageJeu extends JPanel{
 
     public void vraiCreation(Joueur jeSuisJoueur){
         this.grille = new Grille();
-        this.setLayout(new GridLayout(3,3));
-
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 3));
         //Création d'un thread pour plus tard
         ExecutorService executor = Executors.newSingleThreadExecutor();
-
+        AttentePourJouer attente = new AttentePourJouer(this.grille,jeSuisJoueur,this);
         for(Case c:this.grille.listeDeCases){
             c.addActionListener(e-> {
                 if(c.etat == null){   
@@ -48,13 +50,19 @@ public class AffichageJeu extends JPanel{
                         e2.printStackTrace();
                     }
                     //lancement du job d'attente
-                    executor.execute(new AttentePourJouer(this.grille,jeSuisJoueur));              
+                    attente.stop();
+                    executor.execute(attente);              
                 }
             });
-            this.add(c);
+            panel.add(c);
         }
-
+        this.add(panel);
+        this.progressBar = new JProgressBar();
+        this.progressBar.setPreferredSize(new Dimension(hauteur - 150, 25));
+        this.resetProgressBar();
+        this.add(this.progressBar);
         this.setPreferredSize(new Dimension(hauteur - 50, hauteur - 50));
+
 
         //Partie reseau
         Integer nbJoueur;
@@ -70,7 +78,7 @@ public class AffichageJeu extends JPanel{
 
             //Si le joueur n'est pas le deuxieme joueur, il doit attendre
             if(nbJoueur == 1){
-                executor.execute(new AttentePourJouer(this.grille,jeSuisJoueur));
+                executor.execute(attente);
             }
 
             //On annonce le numéro du joueur
@@ -82,6 +90,18 @@ public class AffichageJeu extends JPanel{
             JOptionPane.showMessageDialog(null, "Impossible de joindre le serveur pour se connecter");
             System.exit(0);
         }
+
+
+    }
+
+    public void resetProgressBar(){
+        this.progressBar.setValue(0);
+    }
+    
+    public void avanceProgressBar(){
+        int currentValue = progressBar.getValue();
+        int newValue = currentValue + (int)(progressBar.getMaximum() * 0.1);
+        this.progressBar.setValue(newValue);
     }
 
 
