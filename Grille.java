@@ -11,6 +11,10 @@ public class Grille{
     }
 
     public Case getCase(Integer id){
+        if(id.equals(9)){
+            System.out.println("LA 9e case");
+            return null;
+        }
         return this.listeDeCases.get(id);
     }
 

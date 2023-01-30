@@ -21,7 +21,7 @@ class Job implements Runnable{
     }
 
     public void run() {
-        go(this.g,this.j);
+        play(this.g,this.j);
     }
 
 
@@ -69,10 +69,10 @@ class Job implements Runnable{
                 cpt++;
             }
             cpt = 0;
-            ServeurPartie.jouer(9,jeSuisJoueur.getIcone());
+            //ServeurPartie.jouer(9,jeSuisJoueur.getIcone());
             this.f.resetProgressBar();
-            System.out.println("Trop tard");
-            go(grille,jeSuisJoueur);
+            //System.out.println("Trop tard");
+            //go(grille,jeSuisJoueur);
 
         }
         catch(Exception e){
@@ -80,4 +80,69 @@ class Job implements Runnable{
         }  
     }
 
+
+
+
+
+
+    public void play(Grille grille, Joueur jeSuisJoueur){
+        try{
+            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+    
+            
+    
+            while(true){
+                for(Case c:grille.listeDeCases) c.setEnabled(false);
+                Integer temp;
+                while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)){
+                     Thread.sleep(1000);
+                     System.out.println("No response yet -- "+ temp);
+                }
+                System.out.println("Response:  "+ temp);
+    
+                //If victory
+                if(temp >= 10) {
+                    grille.getCase(temp-10).changeCarac(ServeurPartie.iconeGagnant());
+                    //ServeurPartie.resetPartie();
+                //If it's my turn to play
+                }else{
+                    if(!temp.equals(9)){
+                        grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
+                    }
+                    for(Case c:grille.listeDeCases){
+                        if(c.etat == null){
+                            c.setEnabled(true);
+                        }
+                    }
+                }
+                //Player's play time counter
+                Integer cpt = 0;
+                while(!cpt.equals(10)){
+                    //The player has played
+                    if(stop){                 
+                        System.out.println("I play");
+                        this.f.resetProgressBar();
+                        break;
+                    }
+                    Thread.sleep(1000);
+                    this.f.avanceProgressBar();
+                    cpt++;
+                }
+                if(!stop){
+                    ServeurPartie.jouer(9,jeSuisJoueur.getIcone());                   
+                    System.out.println("Too late");
+                }
+                stop = false;
+                cpt = 0;
+                this.f.resetProgressBar();
+                
+            }
+        }
+        catch(Exception e){
+            System.out.println("Unable to join server to play");
+        }  
+    }
+    
+    
+    
 }
