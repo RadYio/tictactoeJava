@@ -3,11 +3,6 @@ import java.awt.*;
 
 import java.util.Random;
 
-import java.rmi.*;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /* Classe FenetreJoueur qui est une JFrame
  * @author BOULLIER Arthur
  * @author GONIN-SAGET Allan
@@ -19,8 +14,7 @@ public class FenetreJoueur extends JFrame {
 
     //largueur de la fenetre
     static int largeur = 950;
-
-    //grille de jeu
+    JProgressBar progressBar = null;
     public Grille grille;
 
     /*
@@ -42,6 +36,7 @@ public class FenetreJoueur extends JFrame {
 
         //Création de la zone de chat
         AffichageChat zoneChat = new AffichageChat(jeSuisJoueur.getIcone());
+
         AffichageJeu zoneJeu = new AffichageJeu(jeSuisJoueur);
 
     
@@ -54,7 +49,6 @@ public class FenetreJoueur extends JFrame {
         //On ajoute nos deux zones a la fenetre
         this.add(panelTotal);
 
-        //On change le thème de la fenetre
         UIManager.put("Label.font", new Font("Liberation Serif",Font.PLAIN,18));
         try {
             UIManager.setLookAndFeel( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -72,6 +66,15 @@ public class FenetreJoueur extends JFrame {
         this.setVisible(true);
         this.setResizable(false);
         
+    }
+    
+    public void resetProgressBar(){
+       this.progressBar.setValue(0);
+    }
+    public void avanceProgressBar(){
+        int currentValue = progressBar.getValue();
+        int newValue = currentValue + (int)(progressBar.getMaximum() * 0.1);
+        this.progressBar.setValue(newValue);
     }
 
     public static void main(String[] args){
