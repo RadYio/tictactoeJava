@@ -56,7 +56,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
 
     /* Jouer un coup
      * @return 1 si le joueur a gagné
-     * @return -1 si la partie n'existe plus
+     * @return 0 sinon
      * @param i le numero de la case jouée
      */
     @Override
@@ -71,7 +71,6 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
             petitChat.envoyerMessage("Le joueur " + j + " gagne la partie", '*');
             return 1;
         }
-            
         return 0;
     }
 

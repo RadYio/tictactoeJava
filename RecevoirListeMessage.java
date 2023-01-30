@@ -10,13 +10,13 @@ import javax.swing.*;
 
 public class RecevoirListeMessage implements Runnable{
     private static Integer delai = 1000;
-    private static Integer nbDelaiTimeOut = 10;
+    private static Integer nbDelaiTimeOut = 5;
 
 
     private Integer nbTry;
-    private JTextArea zoneChat;
-    private JButton boutonEnvoyer;
-    private JTextField zoneSaisie;
+
+    private AffichageChat unChat;
+    private ImageIcon iconeReconnect;
 
     /*
      * Constructeur de la classe Job
@@ -25,11 +25,17 @@ public class RecevoirListeMessage implements Runnable{
      * @param zoneSaisie: la zone de saisie des messages
      * @return void
      */
-    public RecevoirListeMessage(JTextArea zoneChat, JButton boutonEnvoyer, JTextField zoneSaisie){
-        this.zoneChat = zoneChat;
-        this.boutonEnvoyer = boutonEnvoyer;
-        this.zoneSaisie = zoneSaisie;
+    public RecevoirListeMessage(AffichageChat leChat){
+        this.unChat = leChat;
         this.nbTry = 0;
+
+        this.iconeReconnect = new ImageIcon();
+        try{
+            Image img = ImageIO.read(new File("./assets/icon_network_fail.png"));
+            this.iconeReconnect.setImage(img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+        }catch(Exception e){
+            System.out.println("Erreur");
+        }
     }
     
     /*
@@ -37,26 +43,28 @@ public class RecevoirListeMessage implements Runnable{
      * @return void
      */
     public void run(){
-        go(this.zoneChat, this.boutonEnvoyer, this.zoneSaisie);
+        go(this.unChat);
     }
 
-    /*
-     * go() est la méthode qui sera éxécutée à chaque fois que le joueur sera en attente de l'autre joueur à distance
-     * @param zoneChat: la zone de chat ou sont affichés les messages
-     * @param boutonEnvoyer: le bouton qui permet d'envoyer un message
-     * @param zoneSaisie: la zone de saisie du message
-     * @return void
-     */
-    private void go(JTextArea zoneChat, JButton boutonEnvoyer, JTextField zoneSaisie){
+  
+    private void go(AffichageChat leChat){
         //Partie reseau
         while(this.nbTry <= nbDelaiTimeOut){
             try{
                 InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
                 this.nbTry = 0;
-                zoneChat.setText("");
+                unChat.zoneChat.setText("");
+
+                //On verifie si le bouton est passé dans l'état de reconnexion
+                if(unChat.boutonEnvoyer.getIcon() != leChat.iconeEnvoyer){
+                    unChat.boutonEnvoyer.removeActionListener(unChat.boutonEnvoyer.getActionListeners()[0]);
+                    unChat.boutonEnvoyer.setIcon(leChat.iconeEnvoyer);
+                    unChat.boutonEnvoyer.addActionListener(leChat.actionEnvoyer);
+                }
+
                 ArrayList<String> messages = ServeurMessage.recevoirMessage();
                 for(String message : messages){
-                    zoneChat.append(message + "\n");
+                    unChat.zoneChat.append(message + "\n");
                 }
                 changerEtatInterface(true);
             }catch(Exception e){
@@ -70,22 +78,14 @@ public class RecevoirListeMessage implements Runnable{
         JOptionPane.showMessageDialog(null, "Impossible de joindre le serveur pour le chat");
 
         //On change le bouton pour qu'il propose une reconnexion au lieu d'envoyer un message
-        boutonEnvoyer.removeActionListener(boutonEnvoyer.getActionListeners()[0]);
-
-        ImageIcon iconeDeBonneTaille = new ImageIcon();
-        try{
-            Image img = ImageIO.read(new File("./assets/icon_network_fail.png"));
-            iconeDeBonneTaille.setImage(img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
-        }catch(Exception e){
-            System.out.println("Erreur");
-        }
-
-        boutonEnvoyer.setIcon(iconeDeBonneTaille);
-        boutonEnvoyer.addActionListener( e -> {
+        unChat.boutonEnvoyer.removeActionListener(unChat.boutonEnvoyer.getActionListeners()[0]);
+        unChat.boutonEnvoyer.setIcon(this.iconeReconnect);
+        
+        unChat.boutonEnvoyer.addActionListener( e -> {
             this.nbTry = 0;
-            go(zoneChat, boutonEnvoyer, zoneSaisie);
+            go(unChat);
         });
-        boutonEnvoyer.setEnabled(true);
+        unChat.boutonEnvoyer.setEnabled(true);
     }
 
     /*
@@ -95,9 +95,9 @@ public class RecevoirListeMessage implements Runnable{
      */
     private void changerEtatInterface(Boolean etat){
         System.out.println("Etat de l'interface: " + etat);
-        this.zoneChat.setEnabled(etat);
-        this.boutonEnvoyer.setEnabled(etat);
-        this.zoneSaisie.setEnabled(etat);
+        unChat.zoneChat.setEnabled(etat);
+        unChat.boutonEnvoyer.setEnabled(etat);
+        unChat.messageAEnvoyer.setEnabled(etat);
     }
 
     
