@@ -8,6 +8,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import javax.swing.*;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class RecevoirListeMessage implements Runnable{
     private static Integer delai = 1000;
     private static Integer nbDelaiTimeOut = 5;
@@ -57,7 +60,6 @@ public class RecevoirListeMessage implements Runnable{
 
                 //On verifie si le bouton est passé dans l'état de reconnexion
                 if(unChat.boutonEnvoyer.getIcon() != leChat.iconeEnvoyer){
-                    unChat.boutonEnvoyer.removeActionListener(unChat.boutonEnvoyer.getActionListeners()[0]);
                     unChat.boutonEnvoyer.setIcon(leChat.iconeEnvoyer);
                     unChat.boutonEnvoyer.addActionListener(leChat.actionEnvoyer);
                 }
@@ -76,14 +78,15 @@ public class RecevoirListeMessage implements Runnable{
             
         }
         JOptionPane.showMessageDialog(null, "Impossible de joindre le serveur pour le chat");
-
-        //On change le bouton pour qu'il propose une reconnexion au lieu d'envoyer un message
         unChat.boutonEnvoyer.removeActionListener(unChat.boutonEnvoyer.getActionListeners()[0]);
+        //On change le bouton pour qu'il propose une reconnexion au lieu d'envoyer un message
         unChat.boutonEnvoyer.setIcon(this.iconeReconnect);
-        
-        unChat.boutonEnvoyer.addActionListener( e -> {
+        System.out.println("je suis la");
+        unChat.boutonEnvoyer.addActionListener(e -> {
             this.nbTry = 0;
-            go(unChat);
+            ExecutorService nouveau = Executors.newSingleThreadExecutor();
+            nouveau.execute(new RecevoirListeMessage(unChat));
+            unChat.boutonEnvoyer.removeActionListener(unChat.boutonEnvoyer.getActionListeners()[0]);
         });
         unChat.boutonEnvoyer.setEnabled(true);
     }

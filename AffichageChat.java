@@ -32,6 +32,7 @@ public class AffichageChat extends JPanel{
 
     public ImageIcon iconeEnvoyer;
     public ActionListener actionEnvoyer;
+    public ActionListener actionReconnecter;
 
     /*
      * Constructeur de la classe AffichageChat
@@ -79,6 +80,7 @@ public class AffichageChat extends JPanel{
 
         this.actionEnvoyer = new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                System.out.println("test ici ??");
                 try{ 
                     InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
                     ServeurMessage.envoyerMessage(messageAEnvoyer.getText(), j);
@@ -87,6 +89,12 @@ public class AffichageChat extends JPanel{
                         System.out.println("Erreur d'accès à l'objet distant.");
                         System.out.println(ex.toString());
                 }
+            }
+        };
+
+        this.actionReconnecter = new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                
             }
         };
 
@@ -106,8 +114,8 @@ public class AffichageChat extends JPanel{
         this.add(boiteTotale);
 
         //On lance le thread qui va recevoir les messages
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new RecevoirListeMessage(this));
+        ExecutorService petitThread = Executors.newSingleThreadExecutor();
+        petitThread.execute(new RecevoirListeMessage(this));
     
 
     }
