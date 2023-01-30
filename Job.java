@@ -1,5 +1,7 @@
 import java.rmi.*;
 
+import javax.swing.*;
+
 /*
  * Classe Job qui implémente Runnable et qui permet de jouer à distance via un serveur RMI
  * 
@@ -54,10 +56,11 @@ public class Job implements Runnable{
             }
             System.out.println("Retour:  "+ temp);
 
-            //Si victoire il y a
+            //Si victoire
             if(temp >= 10) {
                 grille.getCase(temp-10).changeCarac(ServeurPartie.iconeGagnant());
-                ServeurPartie.resetPartie();
+                JOptionPane.showMessageDialog(null, "Vous avez perdu !");
+                System.exit(0);
             //Sinon un nouveau tour de jeu, donc on active les cases
             }else{
                 grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));

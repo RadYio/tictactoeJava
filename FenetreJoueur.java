@@ -45,7 +45,13 @@ public class FenetreJoueur extends JFrame {
                     c.changeCarac(jeSuisJoueur.getIcone());                 
                     try{
                         InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
-                        ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());  
+                        Integer gagner = ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());
+
+                        if(gagner == 1){
+                            JOptionPane.showMessageDialog(null, "Vous avez gagné !");
+                            System.exit(0);
+                        }
+                        
                     }catch(Exception e2){
                         System.out.println("ne peut pas jouer");
                         e2.printStackTrace();
