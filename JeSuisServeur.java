@@ -1,35 +1,38 @@
+
+
 import java.rmi.*;
 import java.rmi.registry.*;
 
 public class JeSuisServeur {
-    
+    static private Integer port = 1099;
     public JeSuisServeur(){
         try{
-            LocateRegistry.createRegistry(1099);
-            System.out.println("RMIregistry lance sur le port: (" + 1099 + ")");
-        }catch(
-            RemoteException e){System.out.println("Erreur de creation du RMIregistry");
+            //Remplace le lancement de rmiregistry
+            LocateRegistry.createRegistry(port);
+            System.out.println("RMIregistry lance sur le port: (" + port + ")");
+        }catch(RemoteException e){
+            System.out.println("Erreur de creation du RMIregistry sur le port: " + port);
         }
 
         try {
-            System.out.println( "Serveur : Construction de l'implementation");
+            System.out.println( "[Serveur] : Construction des objets distants");
             ChatRemote leChatDuJeu = new ChatRemote();
             PartieRemote MoteurDuJeu = new PartieRemote(leChatDuJeu);
 
-            System.out.println("Objet MoteurDuJeu lie dans le RMIregistry");
-            Naming.rebind("rmi://localhost:1099/Partie", MoteurDuJeu);
+            //On rend l'objet PartieRemote disponible à distance
+            Naming.rebind("rmi://localhost:"+ port +"/Partie", MoteurDuJeu);
+            System.out.println("[Serveur] : Objet MoteurDuJeu lie dans le RMIregistry");
 
-            System.out.println("Objet leChatDuJeu lie dans le RMIregistry");
-            Naming.rebind("rmi://localhost:1099/Chat", leChatDuJeu);
+            //On rend l'objet ChatRemote disponible à distance
+            Naming.rebind("rmi://localhost:" + port + "/Chat", leChatDuJeu);
+            System.out.println("[Serveur] : Objet leChatDuJeu lie dans le RMIregistry");
             
-            System.out.println("Attente...");
+            System.out.println("[Serveur] : Attente d'invocation des clients...");
 
         }catch (Exception e) {
-            System.out.println("Erreur de liaison de l'objet peut etre pas");
+            System.out.println("[Serveur] : Erreur au moment de la liaison");
             System.out.println(e.toString());
         }
-
-        
 
     }
 
