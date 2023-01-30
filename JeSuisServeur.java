@@ -1,9 +1,13 @@
-
-
 import java.rmi.*;
 import java.rmi.registry.*;
 
+/*
+ * Classe JeSuisServeur qui s'occupe de lancer le serveur de chat ainsi que de jeu.
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class JeSuisServeur {
+
     static private Integer port = 1099;
     public JeSuisServeur(){
         try{
@@ -22,6 +26,7 @@ public class JeSuisServeur {
             //On rend l'objet PartieRemote disponible à distance
             Naming.rebind("rmi://localhost:"+ port +"/Partie", MoteurDuJeu);
             System.out.println("[Serveur] : Objet MoteurDuJeu lie dans le RMIregistry");
+
 
             //On rend l'objet ChatRemote disponible à distance
             Naming.rebind("rmi://localhost:" + port + "/Chat", leChatDuJeu);

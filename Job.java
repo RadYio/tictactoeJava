@@ -1,19 +1,43 @@
 import java.rmi.*;
 
-class Job implements Runnable{
+/*
+ * Classe Job qui implémente Runnable et qui permet de jouer à distance via un serveur RMI
+ * 
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ * 
+ */
+
+public class Job implements Runnable{
 
     private Grille g;
     private Joueur j;
 
+    /*
+     * Constructeur de la classe Job
+     * @param grille: la grille de jeu
+     * @param jeSuisJoueur: le joueur qui est en attente
+     * @return void
+     */
     public Job(Grille grille,Joueur jeSuisJoueur){
         this.g = grille;
         this.j = jeSuisJoueur;
     }
 
+    /*
+     * run() est la méthode qui doit etre implémentée pour que la classe puisse être utilisée comme un Thread
+     * @return void
+     */
     public void run(){
         go(this.g, this.j);
     }
-
+    
+    /*
+     * go() est la méthode qui sera éxécutée à chaque fois que le joueur sera en attente de l'autre joueur à distance
+     * @param grille: la grille de jeu
+     * @param jeSuisJoueur: le joueur qui est en attente
+     * @return void
+     */
     public void go(Grille grille, Joueur jeSuisJoueur){
         try{
             InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
