@@ -1,9 +1,9 @@
 import java.rmi.*;
 import java.rmi.registry.*;
 
-public class JeSuisServeurChat {
+public class JeSuisServeur {
     
-    public JeSuisServeurChat(){
+    public JeSuisServeur(){
         try{
             LocateRegistry.createRegistry(1099);
             System.out.println("RMIregistry lance sur le port: (" + 1099 + ")");
@@ -34,7 +34,7 @@ public class JeSuisServeurChat {
     }
 
     public static void main(String[] args){
-        new JeSuisServeurChat();
+        new JeSuisServeur();
     }
     
 
