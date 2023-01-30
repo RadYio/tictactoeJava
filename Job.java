@@ -45,7 +45,9 @@ class Job implements Runnable{
                 //ServeurPartie.resetPartie();
             //Si c'est mon tour de jouer
             }else{
-                grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
+                if(!temp.equals(9)){
+                    grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
+                }
                 for(Case c:grille.listeDeCases){
                     if(c.etat == null){
                         c.setEnabled(true);
@@ -67,7 +69,10 @@ class Job implements Runnable{
                 cpt++;
             }
             cpt = 0;
+            ServeurPartie.jouer(9,jeSuisJoueur.getIcone());
+            this.f.resetProgressBar();
             System.out.println("Trop tard");
+            go(grille,jeSuisJoueur);
 
         }
         catch(Exception e){

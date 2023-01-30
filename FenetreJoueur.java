@@ -29,6 +29,8 @@ public class FenetreJoueur extends JFrame {
         AffichageChat zoneChat = new AffichageChat(jeSuisJoueur.getIcone());
 
         Job job = new Job(this.grille,jeSuisJoueur,this);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
         //Création des cases
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
@@ -43,7 +45,7 @@ public class FenetreJoueur extends JFrame {
                         System.out.println("ne peut pas jouer");
                         e2.printStackTrace();
                     }
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    //ExecutorService executor = Executors.newSingleThreadExecutor();
                     job.stop();
                     executor.execute(job);              
                 }
@@ -101,8 +103,8 @@ public class FenetreJoueur extends JFrame {
             System.out.println("Vous etes le joueur " + nbJoueur);
 
             if(nbJoueur == 1){
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Job(this.grille,jeSuisJoueur,this));
+                //ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(job);
             }
             
 

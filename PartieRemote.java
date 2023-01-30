@@ -54,7 +54,7 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
      */
     @Override
     public Integer jouer(Integer i, Character j) throws RemoteException {
-        System.out.println("[SERVEUR] - "+ j +" joue");
+        System.out.println("[SERVEUR] - "+ j +" joue"+i);
         this.laGrille.getCase(i).changeCarac(j);
         this.dernierCoup = i;
         this.tour++;
