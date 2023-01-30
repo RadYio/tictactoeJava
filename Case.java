@@ -1,5 +1,10 @@
 import javax.swing.*;
 
+/*
+ * Classe Case : représente une case de la grille
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class Case extends JButton{
     Character etat = null;
     Integer idCase;

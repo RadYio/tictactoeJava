@@ -8,26 +8,40 @@ import java.rmi.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/* Classe FenetreJoueur qui est une JFrame
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class FenetreJoueur extends JFrame {
+    
+    //hautuer de la fenetre
     static int hauteur = 600;
+
+    //largueur de la fenetre
     static int largeur = 950;
     JProgressBar progressBar = null;
     public Grille grille;
 
-    public FenetreJoueur(){
+    /*
+     * Constructeur de la classe FenetreJoueur
+     */
+    public FenetreJoueur(Joueur jeSuisJoueur){
+
+        //choix du titre de la fenetre
         super("XxXx__TicTacToe__xXxX");
-        Random r = new Random();
-        char choix = (char)(r.nextInt(26) + 'A');
-        Joueur jeSuisJoueur = new Joueur(choix);
-        this.grille = new Grille();
+
+        //choix du layout de la fenetre
         this.setLayout(new GridLayout());
+
+        //On decide de tout quitter si on ferme la fenetre (classique)
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        //On definit la taille de la fenetre
         this.setSize(new Dimension(largeur,hauteur));
+
         //Création de la zone de chat
         AffichageChat zoneChat = new AffichageChat(jeSuisJoueur.getIcone());
-
+        /////////
         Job job = new Job(this.grille,jeSuisJoueur,this);
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -72,9 +86,21 @@ public class FenetreJoueur extends JFrame {
         panel3.add(zoneChat);
         
         panel3.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
+        ////////////
+        AffichageJeu zoneJeu = new AffichageJeu(jeSuisJoueur);
 
+    
+        JPanel panelTotal = new JPanel();
+        panelTotal.setLayout(new GridLayout(1,2));
+        panelTotal.add(zoneJeu);
+        panelTotal.add(zoneChat);
+        panelTotal.setBorder(BorderFactory.createEmptyBorder(25,25,25,25));
 
+        //On ajoute nos deux zones a la fenetre
+        this.add(panelTotal);
+        ////////////////
         this.add(panel3);
+        ////////////
 
         UIManager.put("Label.font", new Font("Liberation Serif",Font.PLAIN,18));
         try {
@@ -92,25 +118,6 @@ public class FenetreJoueur extends JFrame {
         this.repaint();
         this.setVisible(true);
         this.setResizable(false);
-
-
-        //Partie reseau
-        Integer nbJoueur;
-        try{
-            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
-
-            nbJoueur = ServeurPartie.connexion(jeSuisJoueur.getIcone());
-            System.out.println("Vous etes le joueur " + nbJoueur);
-
-            if(nbJoueur == 1){
-                //ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(job);
-            }
-            
-
-        }catch(Exception e){
-            System.out.println("Impossible de joindre le serveur pour se connecter");
-        }
         
     }
     
@@ -124,7 +131,11 @@ public class FenetreJoueur extends JFrame {
     }
 
     public static void main(String[] args){
-        new FenetreJoueur();
+        
+        Random r = new Random();
+        char choix = (char)(r.nextInt(26) + 'A');
+
+        new FenetreJoueur(new Joueur(choix));
     }
 }
 

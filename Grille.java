@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 
+/**
+ * Classe Grille
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
+
 public class Grille{
     ArrayList<Case> listeDeCases;
 
@@ -10,6 +16,11 @@ public class Grille{
         }
     }
 
+    /*
+     * Méthode qui permet de récupérer une case de la grille
+     * @param id: l'identifiant de la case
+     * @return Case: la case correspondante
+     */
     public Case getCase(Integer id){
         if(id.equals(9)){
             System.out.println("LA 9e case");
@@ -18,6 +29,10 @@ public class Grille{
         return this.listeDeCases.get(id);
     }
 
+    /*
+     * Méthode qui permet de savoir si un joueur a gagné
+     * @return boolean: vrai si un joueur a gagné, faux sinon
+     */
     public boolean verificationVictoire(){
         // Vérifie les lignes horizontales
         for (int i = 0; i < 9; i += 3) {
@@ -40,7 +55,10 @@ public class Grille{
         }
         return false;
     }
-    
+
+    /*
+     * main de test
+     */
     public static void main(String[] args){
         new Grille();
     }
