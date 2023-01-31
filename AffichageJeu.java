@@ -7,24 +7,45 @@ import java.util.concurrent.Executors;
 import java.rmi.*;
 
 
-
+/*
+ * Classe AffichageJeu qui est un JPanel
+ * @author BOULLIER Arthur
+ * @author GONIN-SAGET Allan
+ */
 public class AffichageJeu extends JPanel{
     
     public Grille grille;
     private Integer hauteur;
-    public JProgressBar progressBar = null;
+    public JProgressBar progressBar;
 
+    /*
+     * Constructeur de la classe AffichageJeu sans la taille en parametres
+     * par defaut la taille est de 50
+     * @param jeSuisJoueur le joueur qui est en train de jouer
+     * @return void
+     */
     public AffichageJeu(Joueur jeSuisJoueur){
         this.hauteur = 50;
         this.vraiCreation(jeSuisJoueur);
     }
 
+    /*
+     * Constructeur de la classe AffichageJeu avec une taille en parametre
+     * @param jeSuisJoueur le joueur qui est en train de jouer
+     * @param taille la taille de la fenetre
+     */
     public AffichageJeu(Joueur jeSuisJoueur, Integer taille){
         this.hauteur = taille;
         this.vraiCreation(jeSuisJoueur);
     }
 
+    /*
+     * Methode qui crée le panel de jeu
+     * @param jeSuisJoueur le joueur qui est en train de jouer
+     * @return void
+     */
     public void vraiCreation(Joueur jeSuisJoueur){
+        this.progressBar = null;
         this.grille = new Grille();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel panel = new JPanel();
@@ -92,20 +113,31 @@ public class AffichageJeu extends JPanel{
             JOptionPane.showMessageDialog(this, "Impossible de joindre le serveur pour se connecter");
             System.exit(0);
         }
-
-
     }
 
+    /*
+     * Réinitialise la barre de progression
+     * @return void
+     */
     public void resetProgressBar(){
         this.progressBar.setValue(0);
     }
     
+    /*
+     * Avance la barre de progression de 10%
+     * @return void
+     */
     public void avanceProgressBar(){
         int currentValue = progressBar.getValue();
         int newValue = currentValue + (int)(progressBar.getMaximum() * 0.1);
         this.progressBar.setValue(newValue);
     }
 
+    /*
+     * Affiche un message et quitte l'application
+     * @param message Le message à afficher
+     * @return void
+     */
     private void afficherMessageEtSortir(String message) {
         System.out.println(message);
         JOptionPane.showMessageDialog(this, message);
