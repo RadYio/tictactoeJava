@@ -36,22 +36,25 @@ public class PartieRemote extends UnicastRemoteObject implements InterfacePartie
      * @param j le joueur qui se connecte
      */
     @Override
-    public Integer connexion(Character j) throws RemoteException {
+    public retourConnexion connexion(Character j) throws RemoteException {
         System.out.println("[SERVEUR] - Un joueur se connecte");
         if(this.joueur1 == null){
             this.joueur1 = j;
             this.petitChat.envoyerMessage("Joueur 1 vient de se connecter", j);
-            return 1;
+            return retourConnexion.JOUEUR1;
         }
         else if(this.joueur2 == null){
+            //cas ou les deux caracteres sont les memes
+            if(this.joueur1.equals(j)) return retourConnexion.CARACTERE_IDENTIQUE;
+
             this.joueur2 = j;
             this.petitChat.envoyerMessage("Joueur 2 vient de se connecter", j);
             this.resetPartie();
             this.petitChat.envoyerMessage("---", '*');
             this.petitChat.envoyerMessage("La partie commence", '*');
-            return 2;
+            return retourConnexion.JOUEUR2;
         }
-        return -1;
+        return retourConnexion.PARTIE_DEJA_COMMENCEE;
     }
 
     /* Jouer un coup

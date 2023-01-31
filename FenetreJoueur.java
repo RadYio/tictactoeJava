@@ -79,6 +79,11 @@ public class FenetreJoueur extends JFrame {
 
     public static void main(String[] args){
         
+        //Si il y a un argument dans le main, on prend ce caractere comme nom de joueur
+        if(args.length > 0){
+            new FenetreJoueur(new Joueur(args[0].charAt(0)));
+            return;
+        }
         Random r = new Random();
         char choix = (char)(r.nextInt(26) + 'A');
 

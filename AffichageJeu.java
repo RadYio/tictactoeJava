@@ -1,5 +1,3 @@
-import javax.swing.JPanel;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import java.rmi.*;
+
+
 
 public class AffichageJeu extends JPanel{
     
@@ -41,7 +41,7 @@ public class AffichageJeu extends JPanel{
                         Integer gagner = ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());
 
                         if(gagner == 1){
-                            JOptionPane.showMessageDialog(null, "Vous avez gagné !");
+                            JOptionPane.showMessageDialog(this, "Vous avez gagné !");
                             System.exit(0);
                         }
                         
@@ -65,29 +65,31 @@ public class AffichageJeu extends JPanel{
 
 
         //Partie reseau
-        Integer nbJoueur;
+        InterfacePartie.retourConnexion retour;
         try{
             InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
 
-            nbJoueur = ServeurPartie.connexion(jeSuisJoueur.getIcone());
-            if(nbJoueur <= 0){
-                System.out.println("Trop de joueurs connectés");
-                JOptionPane.showMessageDialog(null, "Trop de joueurs connectés");
-                System.exit(0);
-            }
-
-            //Si le joueur n'est pas le deuxieme joueur, il doit attendre
-            if(nbJoueur == 1){
-                executor.execute(attente);
-            }
-
-            //On annonce le numéro du joueur
-            System.out.println("Vous etes le joueur " + nbJoueur);
+            retour = ServeurPartie.connexion(jeSuisJoueur.getIcone());
             
+            switch(retour){
+                case JOUEUR1:
+                    System.out.println("Vous etes le joueur 1");
+                    executor.execute(attente);
+                    break;
+                case JOUEUR2:
+                    System.out.println("Vous etes le joueur 2");
+                    break;
+
+                case PARTIE_DEJA_COMMENCEE:
+                case CARACTERE_IDENTIQUE:
+                    //délégation de responsabilité
+                    afficherMessageEtSortir(retour == InterfacePartie.retourConnexion.PARTIE_DEJA_COMMENCEE ? "Partie deja commencee" : "Caractere identique");
+                    break;
+            }
 
         }catch(Exception e){
             System.out.println("Impossible de joindre le serveur pour se connecter");
-            JOptionPane.showMessageDialog(null, "Impossible de joindre le serveur pour se connecter");
+            JOptionPane.showMessageDialog(this, "Impossible de joindre le serveur pour se connecter");
             System.exit(0);
         }
 
@@ -102,6 +104,12 @@ public class AffichageJeu extends JPanel{
         int currentValue = progressBar.getValue();
         int newValue = currentValue + (int)(progressBar.getMaximum() * 0.1);
         this.progressBar.setValue(newValue);
+    }
+
+    private void afficherMessageEtSortir(String message) {
+        System.out.println(message);
+        JOptionPane.showMessageDialog(this, message);
+        System.exit(0);
     }
 
 
