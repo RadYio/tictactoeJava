@@ -1,5 +1,5 @@
 import java.rmi.*;
-
+import javax.swing.*;
 
 /*
  * Classe Job qui implémente Runnable et qui permet de jouer à distance via un serveur RMI
@@ -15,6 +15,7 @@ public class AttentePourJouer implements Runnable{
     private Joueur j;
     private AffichageJeu f;
     private boolean stop = false;
+    private boolean dejaLance = false;
 
     /*
      * Constructeur de la classe Job
@@ -33,6 +34,8 @@ public class AttentePourJouer implements Runnable{
      * @return void
      */
     public void run(){
+        if(dejaLance)return;
+        dejaLance = true;
         go(this.g, this.j);
     }
     
@@ -58,15 +61,16 @@ public class AttentePourJouer implements Runnable{
                 Integer temp;
                 while((temp = ServeurPartie.monTour(jeSuisJoueur.getIcone())).equals(-1)){
                      Thread.sleep(1000);
-                     System.out.println("No response yet -- "+ temp);
+                     System.out.println("Pas de réponse -- "+ temp);
                 }
-                System.out.println("Response:  "+ temp);
+                System.out.println("Réponse:  "+ temp);
     
-                //If victory
+                //Si l'adversaire a gagner
                 if(temp >= 10) {
                     grille.getCase(temp-10).changeCarac(ServeurPartie.iconeGagnant());
-                    //ServeurPartie.resetPartie();
-                //If it's my turn to play
+                    JOptionPane.showMessageDialog(null, "Vous avez perdu !");
+                System.exit(0);
+                //Sinon c'est le tour du joueur
                 }else{
                     if(!temp.equals(9)){
                         grille.getCase(temp).changeCarac(ServeurPartie.getAdvIcone(jeSuisJoueur.getIcone()));
@@ -77,12 +81,12 @@ public class AttentePourJouer implements Runnable{
                         }
                     }
                 }
-                //Player's play time counter
+                //Compteur de temps de jeu -> 10sec
                 Integer cpt = 0;
                 while(!cpt.equals(10)){
-                    //The player has played
+                    //Le joueur à joué
                     if(stop){                 
-                        System.out.println("I play");
+                        System.out.println("Je joue");
                         this.f.resetProgressBar();
                         break;
                     }
@@ -92,7 +96,7 @@ public class AttentePourJouer implements Runnable{
                 }
                 if(!stop){
                     ServeurPartie.jouer(9,jeSuisJoueur.getIcone());                   
-                    System.out.println("Too late");
+                    System.out.println("Trop tard");
                 }
                 stop = false;
                 cpt = 0;

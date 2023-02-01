@@ -62,6 +62,7 @@ public class AffichageJeu extends JPanel{
                         Integer gagner = ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());
 
                         if(gagner == 1){
+                            attente.stop();
                             JOptionPane.showMessageDialog(this, "Vous avez gagné !");
                             System.exit(0);
                         }
