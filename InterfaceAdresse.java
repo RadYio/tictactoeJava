@@ -1,5 +1,7 @@
 public class InterfaceAdresse {
-    final static String adresseConnexionChat = "rmi://172.18.41.235:1099/Chat";
-    final static String adresseConnexionPartie = "rmi://172.18.41.235:1099/Partie";
-    final static Integer port = 1099;
+    private final static String ip = "localhost";
+    public final static Integer port = 1099;
+    public final static String adresseConnexionChat = "rmi://" + ip + ":" + port + "/Chat";
+    public final static String adresseConnexionPartie = "rmi://" + ip + ":" + port + "/Partie";
+    
 }
