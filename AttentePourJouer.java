@@ -52,9 +52,7 @@ public class AttentePourJouer implements Runnable{
     */
     public void go(Grille grille, Joueur jeSuisJoueur){
         try{
-            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
-    
-            
+            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup(InterfaceAdresse.adresseConnexionPartie);
     
             while(true){
                 for(Case c:grille.listeDeCases) c.setEnabled(false);
