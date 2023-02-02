@@ -105,7 +105,7 @@ public class AttentePourJouer implements Runnable{
             }
         }
         catch(Exception e){
-            System.out.println("Unable to join server to play");
+            System.out.println("Impossible de se connecter");
         }  
     }
 }
