@@ -8,8 +8,8 @@ import java.rmi.registry.*;
  */
 public class JeSuisServeur {
 
-    static private Integer port = 1099;
     public JeSuisServeur(){
+        Integer port = InterfaceAdresse.port;
         try{
             //Remplace le lancement de rmiregistry
             LocateRegistry.createRegistry(port);

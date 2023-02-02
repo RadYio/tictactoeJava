@@ -82,7 +82,7 @@ public class AffichageChat extends JPanel{
             public void actionPerformed(ActionEvent e){
                 System.out.println("test ici ??");
                 try{ 
-                    InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
+                    InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup(InterfaceAdresse.adresseConnexionChat);
                     ServeurMessage.envoyerMessage(messageAEnvoyer.getText(), j);
                     messageAEnvoyer.setText("");
                 }catch (Exception ex){ 

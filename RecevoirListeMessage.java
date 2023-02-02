@@ -54,7 +54,7 @@ public class RecevoirListeMessage implements Runnable{
         //Partie reseau
         while(this.nbTry <= nbDelaiTimeOut){
             try{
-                InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup("rmi://localhost:1099/Chat");
+                InterfaceChat ServeurMessage = (InterfaceChat) Naming.lookup(InterfaceAdresse.adresseConnexionChat);
                 this.nbTry = 0;
                 unChat.zoneChat.setText("");
 

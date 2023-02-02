@@ -58,7 +58,7 @@ public class AffichageJeu extends JPanel{
                 if(c.etat == null){   
                     c.changeCarac(jeSuisJoueur.getIcone());                 
                     try{
-                        InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+                        InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup(InterfaceAdresse.adresseConnexionPartie);
                         Integer gagner = ServeurPartie.jouer(c.idCase,jeSuisJoueur.getIcone());
 
                         if(gagner == 1){
@@ -89,7 +89,7 @@ public class AffichageJeu extends JPanel{
         //Partie reseau
         InterfacePartie.retourConnexion retour;
         try{
-            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup("rmi://localhost:1099/Partie");
+            InterfacePartie ServeurPartie = (InterfacePartie) Naming.lookup(InterfaceAdresse.adresseConnexionPartie);
 
             retour = ServeurPartie.connexion(jeSuisJoueur.getIcone());
             
