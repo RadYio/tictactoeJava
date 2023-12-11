@@ -23,7 +23,7 @@ javac *.java
 
 ## Éxécution Serveur
 ```sh
-java JeSuisServer
+java JeSuisServeur
 ```
 
 ## Éxécution Client
